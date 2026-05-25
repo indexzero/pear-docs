@@ -11,6 +11,7 @@
 * [Templates](./reference/templates.md)
 * [Node.js Compatibility](./reference/node-compat.md)
 * [Recommended Practices](./reference/recommended-practices.md)
+* [Agent-Friendly Project Practices](./reference/agent-practices.md)
 * [Troubleshooting](./reference/troubleshooting.md)
 * [Frequently Asked Questions](./reference/faq.md)
 * [Migration](./reference/migration.md)
