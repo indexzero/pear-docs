@@ -1,0 +1,54 @@
+{
+  "skill_name": "pear-debug",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "my Pear.teardown callback runs and i can see the log. but the process never actually exits. i have to ctrl+c it",
+      "expected_output": "Inventory of usual culprits: undestroyed swarm, unclosed core/drive/bee, open pipes, intervals, timers. Use Pear.exit() not Bare.exit().",
+      "assertions": [
+        { "type": "must_contain", "value": "swarm.destroy" },
+        { "type": "must_contain", "value": "Pear.exit" },
+        { "type": "must_use_skill", "value": "pear-debug" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "`pear` just exits with no output. nothing on stderr. nothing in stdout. how do i find out what happened?",
+      "expected_output": "Use `pear --log <command>`, then `pear sidecar --log-level 3`, then ps for stale processes, then crash logs in platform `current/`.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear --log" },
+        { "type": "must_contain", "value": "pear sidecar --log-level 3" },
+        { "type": "must_contain", "value": "crash.log" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "where do crash logs live on linux?",
+      "expected_output": "~/.config/pear/current/ directory: sidecar.crash.log, electron-main.crash.log, cli.crash.log.",
+      "assertions": [
+        { "type": "must_contain", "value": "~/.config/pear" },
+        { "type": "must_contain", "value": "sidecar.crash.log" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i want to attach chrome devtools to my terminal pear app while it runs. how?",
+      "expected_output": "pear-inspect gated on Pear.app.dev, prints pear://runtime/devtools/<key>, then pear run pear://runtime and paste key.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear-inspect" },
+        { "type": "must_contain", "value": "pear://runtime" },
+        { "type": "must_contain", "value": "Pear.app.dev" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "i ran `pear sidecar` and it said `Closing any current Sidecar clients...` then hung. now i can't run anything",
+      "expected_output": "Existing sidecar stuck. ps aux | grep -E 'pear|bare', kill the PIDs, then re-run pear.",
+      "assertions": [
+        { "type": "must_contain", "value": "ps aux" },
+        { "type": "must_contain", "value": "kill" },
+        { "type": "judge", "value": "Warns the user that killing pear processes will close any running Pear apps (Keet, PearPass, etc.) and to save first." }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "skill_name": "pear-runtime",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm a backend dev coming from node. someone on twitter said i should check out pear. like what even is it? is it a node alternative? is it for desktop apps? is it some kind of cli?",
+      "expected_output": "Concise overview: Pear is P2P runtime built on Bare (not Node), targets terminal/desktop/mobile, apps are pear:// links resolved over Hyperswarm DHT. Routes user toward starting with the getting-started guide.",
+      "assertions": [
+        { "type": "must_contain", "value": "Bare" },
+        { "type": "must_contain", "value": "pear://" },
+        { "type": "must_use_skill", "value": "pear-runtime" },
+        { "type": "judge", "value": "Mentions all three target surfaces (terminal, desktop, mobile) without overstating Pear as a Node 'alternative' (it is a different runtime)." }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "ok so what's the actual difference between Pear, Bare, and Holepunch? feels like the docs use these interchangeably and i can't tell what's the platform vs the company",
+      "expected_output": "Holepunch = company; Pear = the P2P runtime+platform; Bare = the underlying JavaScript runtime (V8+libuv).",
+      "assertions": [
+        { "type": "must_contain", "value": "Holepunch" },
+        { "type": "must_contain", "value": "Bare" },
+        { "type": "must_contain", "value": "Pear" },
+        { "type": "judge", "value": "Correctly identifies Holepunch as the company, Pear as the runtime/platform, and Bare as the underlying JS runtime built on V8+libuv." }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I want to build a chat app. should I start with terminal or desktop? what changes between them?",
+      "expected_output": "Routes to either pear-terminal-app or pear-desktop-app; explains the tradeoff (terminal = simpler, headless; desktop = HTML UI via Electron).",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-runtime" },
+        { "type": "judge", "value": "Mentions that the choice routes to pear-terminal-app or pear-desktop-app skills (or guides), explains that terminal uses bare-tty/bare-readline and desktop uses pear-electron." }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i ran `pear` for the first time and it just sat there for like 30 seconds. is something broken?",
+      "expected_output": "Explains that first run pulls the platform from peers over the DHT and may take time; suggests running `pear` again or `pear run pear://keet` to verify.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear" },
+        { "type": "judge", "value": "Explains that first run bootstraps the runtime from peers and is expected to be slow; suggests verifying with `pear run pear://keet` or rerunning `pear`." }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "where does pear actually store stuff on my mac? i want to back it up before i mess with `pear drop`",
+      "expected_output": "macOS path: ~/Library/Application Support/pear. Warns that `pear drop` is destructive.",
+      "assertions": [
+        { "type": "must_contain", "value": "Application Support/pear" },
+        { "type": "must_contain", "value": "destructive" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "skill_name": "pear-desktop-app",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "i ran `pear init ui --yes` and the app shows up but the title bar isn't draggable on mac. how do i fix it?",
+      "expected_output": "Add `-webkit-app-region: drag` to a parent containing <pear-ctrl>, with no-drag on clickable children.",
+      "assertions": [
+        { "type": "must_contain", "value": "-webkit-app-region" },
+        { "type": "must_contain", "value": "pear-ctrl" },
+        { "type": "must_use_skill", "value": "pear-desktop-app" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "i'm migrating from pear v1. my app uses Pear.Window and Pear.tray. what's the v2 equivalent?",
+      "expected_output": "import ui from 'pear-electron'; use ui.Window, ui.app.tray. Notes Pear.config -> Pear.app, recommends adding pear.pre = pear-electron/pre.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear-electron" },
+        { "type": "must_contain", "value": "ui.Window" },
+        { "type": "must_contain", "value": "ui.app.tray" },
+        { "type": "must_use_skill", "value": "pear-desktop-app" },
+        { "type": "must_cite", "value": "reference/migration.md" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "my pear desktop app needs to call our api at https://api.example.com. when i `fetch()` it errors. why?",
+      "expected_output": "HTTP/HTTPS blocked by default; add the host to pear.links.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear.links" },
+        { "type": "must_contain", "value": "blocked" },
+        { "type": "must_not_contain", "value": "disable security" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "what's the smallest possible index.js for a v2 pear-electron app?",
+      "expected_output": "5-7 line snippet: import Runtime from 'pear-electron', import Bridge from 'pear-bridge', bridge.ready, runtime.start({bridge}), pipe.on('close', Pear.exit).",
+      "assertions": [
+        { "type": "must_contain", "value": "pear-electron" },
+        { "type": "must_contain", "value": "pear-bridge" },
+        { "type": "must_contain", "value": "Pear.exit" },
+        { "type": "must_contain", "value": "runtime.start" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "i want my pear desktop app to live-reload on file changes",
+      "expected_output": "Pear.updates(() => Pear.reload()) for bundle-level reload, or pear-hotmods for HMR.",
+      "assertions": [
+        { "type": "must_contain", "value": "Pear.updates" },
+        { "type": "judge", "value": "Recommends `Pear.updates(() => Pear.reload())` or `pear-hotmods`, not a third-party file watcher." }
+      ]
+    }
+  ]
+}

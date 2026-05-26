@@ -1,0 +1,56 @@
+{
+  "skill_name": "pear-node-compat",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "my dependency uses `require('node:crypto')`. when i bundle for ios with bare-pack i get `Bail: ModuleTraverseError: MODULE_NOT_FOUND: Cannot find module 'node:crypto'`. wtf",
+      "expected_output": "Explains that bare-pack is static and can't follow runtime branches. Fix with package.json `imports` map mapping `node:crypto`/`crypto` to bare-crypto.",
+      "assertions": [
+        { "type": "must_contain", "value": "imports" },
+        { "type": "must_contain", "value": "bare-crypto" },
+        { "type": "must_not_contain", "value": "which-runtime" },
+        { "type": "must_use_skill", "value": "pear-node-compat" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "i'm porting a node cli to pear. the cli does `child_process.spawn('git', ['status'], { detached: true })`. what do i use?",
+      "expected_output": "bare-subprocess for normal spawning; bare-daemon for detached (bare-subprocess does not implement detached).",
+      "assertions": [
+        { "type": "must_contain", "value": "bare-subprocess" },
+        { "type": "must_contain", "value": "bare-daemon" },
+        { "type": "must_use_skill", "value": "pear-node-compat" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "ugh `process` is undefined in my bare app. is this fixable",
+      "expected_output": "Two options: require('bare-process') and use it explicitly, OR require('bare-process/global') once to set the global. Recommend the first.",
+      "assertions": [
+        { "type": "must_contain", "value": "bare-process" },
+        { "type": "must_contain", "value": "bare-process/global" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i want my library to work on both Node and Bare. write me the package.json imports block for fs and crypto",
+      "expected_output": "imports map with bare/default conditions for fs, fs/*, node:fs, crypto, node:crypto. Lists bare-fs/bare-crypto in dependencies.",
+      "assertions": [
+        { "type": "must_contain", "value": "\"bare\":" },
+        { "type": "must_contain", "value": "\"default\":" },
+        { "type": "must_contain", "value": "bare-fs" },
+        { "type": "must_contain", "value": "bare-crypto" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "is there a `bare-http` package? i need http server",
+      "expected_output": "No `bare-http`. Use `bare-http1` (HTTP/1) and `bare-https`.",
+      "assertions": [
+        { "type": "must_contain", "value": "bare-http1" },
+        { "type": "must_not_contain", "value": "bare-http " },
+        { "type": "judge", "value": "Explicitly clarifies that the module is named `bare-http1`, not `bare-http`." }
+      ]
+    }
+  ]
+}

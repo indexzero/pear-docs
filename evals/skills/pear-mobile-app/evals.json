@@ -1,0 +1,59 @@
+{
+  "skill_name": "pear-mobile-app",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "i cloned bare-expo and added autopass. how do i actually run my backend bundle? i see references to bare-pack but no example with the right hosts",
+      "expected_output": "Full bare-pack invocation with --host ios-arm64 / ios-arm64-simulator / ios-x64-simulator / android-arm64 / android-x64, --linked, --out app/app.bundle.mjs, backend entrypoint.",
+      "assertions": [
+        { "type": "must_contain", "value": "bare-pack" },
+        { "type": "must_contain", "value": "ios-arm64" },
+        { "type": "must_contain", "value": "android-arm64" },
+        { "type": "must_contain", "value": "--linked" },
+        { "type": "must_use_skill", "value": "pear-mobile-app" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "my backend module errors with `AddonError: ADDON_NOT_FOUND: Cannot find addon` on ios. what's missing?",
+      "expected_output": "Addon not built for arch, or not linked into node_modules/react-native-bare-kit/ios/addons. Suggests logging Bare.platform/Bare.arch, rerunning bare-pack --linked, clearing native build cache.",
+      "assertions": [
+        { "type": "must_contain", "value": "Bare.platform" },
+        { "type": "must_contain", "value": "Bare.arch" },
+        { "type": "must_contain", "value": "react-native-bare-kit" },
+        { "type": "must_use_skill", "value": "pear-mobile-app" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "how do i actually send a message from my react native screen down to the bare backend?",
+      "expected_output": "RPC via bare-rpc over Worklet IPC pipe; shared enum file for opcodes; example with rpc.request and a handler on the backend.",
+      "assertions": [
+        { "type": "must_contain", "value": "bare-rpc" },
+        { "type": "must_contain", "value": "Worklet" },
+        { "type": "judge", "value": "Shows both the RN side (rpc.request) and the Bare side (rpc handler) of a complete RPC round-trip." }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "the os keeps suspending my app and i lose my swarm connection. how do i handle this on mobile?",
+      "expected_output": "Subscribe to Bare 'suspend'/'idle'/'resume' events, destroy swarm on suspend, re-create on resume.",
+      "assertions": [
+        { "type": "must_contain", "value": "Bare.on" },
+        { "type": "must_contain", "value": "suspend" },
+        { "type": "must_contain", "value": "resume" },
+        { "type": "must_contain", "value": "swarm.destroy" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "my worklet exits silently and nothing logs. how do i find out what crashed?",
+      "expected_output": "Register Bare.on('uncaughtException', ...) and Bare.on('unhandledRejection', ...); tail iOS log stream (subsystem=='bare') or Android logcat.",
+      "assertions": [
+        { "type": "must_contain", "value": "uncaughtException" },
+        { "type": "must_contain", "value": "unhandledRejection" },
+        { "type": "judge", "value": "Recommends platform-appropriate log tailing (iOS log stream or Android logcat)." }
+      ]
+    }
+  ]
+}

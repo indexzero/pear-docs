@@ -1,0 +1,56 @@
+{
+  "skill_name": "pear-data",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "i'm getting `Error: While lock file: ./pear/app-storage/.../db/LOCK: Resource temporarily unavailable` every time my app starts. i didn't change anything. help",
+      "expected_output": "Diagnoses two-Corestores-on-same-store OR two processes against the same store. Fix: one Corestore per app, use store.namespace() to subdivide; check ps aux for stale processes.",
+      "assertions": [
+        { "type": "must_contain", "value": "Corestore" },
+        { "type": "must_contain", "value": "namespace" },
+        { "type": "must_use_skill", "value": "pear-data" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "writer is appending blocks but my reader process never sees the new ones. i call core.get(latestIndex) and it hangs",
+      "expected_output": "Reader must `await core.update()` to learn about new metadata. Also remind to await core.ready() before reading .key/.length.",
+      "assertions": [
+        { "type": "must_contain", "value": "core.update" },
+        { "type": "must_contain", "value": "ready" },
+        { "type": "must_use_skill", "value": "pear-data" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "i want a key-value store inside my pear app that syncs to peers. should i build it on hypercore or hyperbee?",
+      "expected_output": "Hyperbee — ordered K/V on a core with batches and range queries. Sample with keyEncoding/valueEncoding.",
+      "assertions": [
+        { "type": "must_contain", "value": "Hyperbee" },
+        { "type": "must_contain", "value": "keyEncoding" },
+        { "type": "must_contain", "value": "valueEncoding" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i have a primary core. how do i tell a new peer about the keys of three secondary cores so they can read them too?",
+      "expected_output": "Bootstrap pattern: write the secondary keys into the first block of the primary core; reader fetches primary, parses block 0, then store.get({key}) for each.",
+      "assertions": [
+        { "type": "must_contain", "value": "first block" },
+        { "type": "must_contain", "value": "store.get" },
+        { "type": "judge", "value": "Explains that Corestore replication does NOT carry keys and that they must be exchanged either in-band (primary core) or out-of-band." }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "show me the smallest correct example of replicating one hypercore between two peers (writer and reader)",
+      "expected_output": "Writer: store, core, append, swarm.join(discoveryKey), swarm.on('connection', conn => store.replicate(conn)). Reader: store.get({key}), await ready, swarm.join(discoveryKey), await update, then get blocks. Pear.teardown for swarm.destroy.",
+      "assertions": [
+        { "type": "must_contain", "value": "store.replicate" },
+        { "type": "must_contain", "value": "discoveryKey" },
+        { "type": "must_contain", "value": "Pear.teardown" },
+        { "type": "must_not_contain", "value": "core.replicate(conn)", "label": "uses store.replicate, not per-core" }
+      ]
+    }
+  ]
+}

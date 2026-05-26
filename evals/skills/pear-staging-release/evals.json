@@ -1,0 +1,54 @@
+{
+  "skill_name": "pear-staging-release",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "i staged my app to the `production` channel and ran `pear release production`. then i made a change and ran `pear stage production` again. but when my friend does `pear run pear://<key>` he still sees the old version. why?",
+      "expected_output": "After release, default `pear run` loads the release pointer. New stage doesn't auto-advance the pointer. Either re-release or `--checkout=staged`.",
+      "assertions": [
+        { "type": "must_contain", "value": "release pointer" },
+        { "type": "must_contain", "value": "--checkout" },
+        { "type": "must_use_skill", "value": "pear-staging-release" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "we screwed up the prod release. we need to rollback to length 500. what's the safest way?",
+      "expected_output": "Two methods: `pear release --checkout 500 production` (lightweight pointer change) or dump-stage-release (heavy, appends diff). Pros/cons of each.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear release --checkout 500" },
+        { "type": "judge", "value": "Presents BOTH rollback methods (pointer change vs dump-stage-release) and notes the tradeoff that the pointer method does not produce a new Pear.updates event." }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "i staged from my laptop. now my coworker tried staging the same project from her laptop and the pear:// link is different. is this a bug?",
+      "expected_output": "Not a bug. Channel key derives from (app name, channel, device corestore key) so each machine produces a different key. Stage from one canonical machine.",
+      "assertions": [
+        { "type": "must_contain", "value": "device" },
+        { "type": "must_contain", "value": "deterministic" },
+        { "type": "judge", "value": "Correctly explains that the channel key is deterministic per machine but not across machines, and recommends staging from a single canonical machine." }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i'm setting up a github action to stage and seed our app. what's the minimum sequence of pear commands i need?",
+      "expected_output": "npm ci, npm prune --omit=dev, pear stage <channel>, then either keep `pear seed` running on a server or call `pear release`. Mentions `pear touch` for pre-creating links.",
+      "assertions": [
+        { "type": "must_contain", "value": "npm prune --omit=dev" },
+        { "type": "must_contain", "value": "pear stage" },
+        { "type": "must_contain", "value": "pear seed" },
+        { "type": "must_use_skill", "value": "pear-staging-release" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "how do i see what files are inside pear://keet without installing it?",
+      "expected_output": "pear info pear://keet for metadata, pear dump --list pear://keet for paths, or pear dump pear://keet ./out to materialise.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear dump" },
+        { "type": "must_contain", "value": "pear info" }
+      ]
+    }
+  ]
+}

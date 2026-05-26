@@ -1,0 +1,65 @@
+{
+  "skill_name": "docs:agents-md",
+  "description": "Measures whether AGENTS.md alone (no skills loaded) gives an agent enough context to avoid Pear-runtime anti-patterns and route to the right reference page. Baseline: no AGENTS.md.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "write me a small pear app that listens on stdin and forwards each line to all connected peers over hyperswarm",
+      "expected_output": "Uses bare-readline + bare-tty (not node readline). One Hyperswarm. Pear.teardown(() => swarm.destroy()). Pear.exit on close.",
+      "assertions": [
+        { "type": "must_contain", "value": "bare-readline" },
+        { "type": "must_contain", "value": "bare-tty" },
+        { "type": "must_contain", "value": "Pear.teardown" },
+        { "type": "must_not_contain", "value": "require\\(['\"]readline['\"]\\)", "regex": true },
+        { "type": "must_not_contain", "value": "require\\(['\"]fs['\"]\\)", "regex": true }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "i need my pear app to make https calls to api.openai.com. is fetch supported?",
+      "expected_output": "fetch exists (bare-fetch) but Pear blocks outbound HTTP/HTTPS by default. Add to pear.links allowlist.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear.links" },
+        { "type": "must_contain", "value": "blocked" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "i'm going to have one corestore for app config, one for messages, and one for file uploads. that seems clean. ok?",
+      "expected_output": "No — one Corestore per app. Subdivide with store.namespace().",
+      "assertions": [
+        { "type": "must_contain", "value": "namespace" },
+        { "type": "judge", "value": "Explicitly tells the user NOT to create three Corestores and recommends store.namespace() to scope by subsystem." }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i'm going to publish a release of my app. what's the command flow?",
+      "expected_output": "npm prune --omit=dev, pear stage <channel>, pear release <channel>, pear seed <channel>.",
+      "assertions": [
+        { "type": "must_contain", "value": "npm prune --omit=dev" },
+        { "type": "must_contain", "value": "pear stage" },
+        { "type": "must_contain", "value": "pear release" },
+        { "type": "must_contain", "value": "pear seed" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "i want to set pear.stage.ignore in my package.json. anything to watch out for?",
+      "expected_output": "Custom `ignore` REPLACES the default. Re-add `.git` explicitly.",
+      "assertions": [
+        { "type": "must_contain", "value": ".git" },
+        { "type": "judge", "value": "Specifically warns that setting pear.stage.ignore overrides the default ignore list and that .git must be re-added." }
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "should i use Bare.exit or Pear.exit to terminate my app?",
+      "expected_output": "Pear.exit. It runs Pear.teardown handlers; Bare.exit does not.",
+      "assertions": [
+        { "type": "must_contain", "value": "Pear.exit" },
+        { "type": "must_not_contain", "value": "Bare.exit" }
+      ]
+    }
+  ]
+}

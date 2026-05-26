@@ -1,0 +1,52 @@
+{
+  "skill_name": "pear-init-template",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "i want to make a `pear init` template for our team that scaffolds a chat app with our brand colors. give me the minimum directory structure and _template.json",
+      "expected_output": "Directory with _template.json (params: name, license), package.json with __name__/__license__, index.js. Mentions pear init ./dir to test.",
+      "assertions": [
+        { "type": "must_contain", "value": "_template.json" },
+        { "type": "must_contain", "value": "__name__" },
+        { "type": "must_contain", "value": "params" },
+        { "type": "must_use_skill", "value": "pear-init-template" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "how do i make a template that prompts for a window height as a number, not a string?",
+      "expected_output": "Use validation `(v) => /^\\d+$/.test(v)` and `shave: [-1, 1]` to strip surrounding quotes after substitution.",
+      "assertions": [
+        { "type": "must_contain", "value": "validation" },
+        { "type": "must_contain", "value": "shave" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "i want my team to do `pear init pear://<our-key>`. how do i distribute the template?",
+      "expected_output": "pear stage production, pear seed production from the template dir; share the pear:// link.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear stage" },
+        { "type": "must_contain", "value": "pear seed" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "my _template.json validation isn't running. the prompt just accepts whatever i type",
+      "expected_output": "Likely passed a real function instead of a string; validation MUST be a stringified function `\"(v) => ...\"`.",
+      "assertions": [
+        { "type": "must_contain", "value": "stringified" },
+        { "type": "judge", "value": "Explains that validation must be a string containing a function expression, not a real JS function, because _template.json is JSON." }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "where can i see existing templates for reference?",
+      "expected_output": "holepunchto/templates repo; built-in `default`, `ui`, `node-compat` names.",
+      "assertions": [
+        { "type": "must_contain", "value": "templates" },
+        { "type": "judge", "value": "Points the user at holepunchto/templates AND mentions the built-in `default`/`ui`/`node-compat` shortcuts." }
+      ]
+    }
+  ]
+}

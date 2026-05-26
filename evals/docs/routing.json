@@ -1,0 +1,76 @@
+{
+  "skill_name": "docs:routing",
+  "description": "Measures whether AGENTS.md + bundled skills route the agent to the CORRECT specialised skill. Each prompt is paired with the skill that *should* fire. Failure = misroute.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "i'm starting a terminal app from scratch. give me the smallest hello-world",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-terminal-app" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "my pear-electron window appears but it isn't draggable on mac",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-desktop-app" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "ADDON_NOT_FOUND on ios when running my bare backend through react-native-bare-kit",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-mobile-app" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i staged and seeded but a peer doesn't see my latest change",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-staging-release" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "my reader process never sees new blocks even after the writer appends",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-data" }
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "swarm.join takes forever after i restart my app",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-swarm" }
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "bare-pack errors with MODULE_NOT_FOUND on node:crypto",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-node-compat" }
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "my pear app exits but the process hangs",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-debug" }
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "I want to make a pear init template for my team",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-init-template" }
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "what is pear?",
+      "assertions": [
+        { "type": "must_use_skill", "value": "pear-runtime" }
+      ]
+    }
+  ]
+}

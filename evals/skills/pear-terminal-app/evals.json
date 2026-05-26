@@ -1,0 +1,58 @@
+{
+  "skill_name": "pear-terminal-app",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "i just ran `pear init --yes --type terminal`. now i want to make it read lines from the terminal and echo them back. how do i wire stdin properly? do i use node's readline?",
+      "expected_output": "Uses bare-readline + bare-tty.ReadStream(0) / WriteStream(1), sets MODE_RAW, registers Pear.teardown, exits via Pear.exit. Does NOT use node readline or node:tty.",
+      "assertions": [
+        { "type": "must_contain", "value": "bare-readline" },
+        { "type": "must_contain", "value": "bare-tty" },
+        { "type": "must_contain", "value": "Pear.teardown" },
+        { "type": "must_not_contain", "value": "require\\(['\"](node:)?readline['\"]\\)", "regex": true },
+        { "type": "must_not_contain", "value": "require\\(['\"]node:tty['\"]\\)", "regex": true },
+        { "type": "must_use_skill", "value": "pear-terminal-app" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "i want my terminal pear app to accept an optional --topic argument. how do i parse it? `process.argv` doesn't seem to exist",
+      "expected_output": "Reads from Pear.app.args (or imports bare-process), explains there is no global process by default, optionally suggests paparam.",
+      "assertions": [
+        { "type": "must_contain", "value": "Pear.app.args" },
+        { "type": "must_not_contain", "value": "process.argv" },
+        { "type": "must_use_skill", "value": "pear-terminal-app" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "my terminal app exits but the terminal hangs. like the prompt comes back but the cursor blinks weird. what's wrong?",
+      "expected_output": "Diagnoses missing teardown: swarm.destroy(), core.close(), pipe.end(), readline.close(). Mentions Pear.exit vs Bare.exit.",
+      "assertions": [
+        { "type": "must_contain", "value": "teardown" },
+        { "type": "judge", "value": "Names at least two specific resources that commonly leak (Hyperswarm, Hypercore, readline, pipe) and recommends Pear.exit over Bare.exit." }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "how do i debug a terminal pear app? there's no chrome devtools window since it's headless",
+      "expected_output": "Uses pear-inspect, gates on Pear.app.dev, prints pear://runtime/devtools/<key>, then `pear run pear://runtime`.",
+      "assertions": [
+        { "type": "must_contain", "value": "pear-inspect" },
+        { "type": "must_contain", "value": "pear://runtime" },
+        { "type": "must_contain", "value": "Pear.app.dev" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Convert this Node CLI to a Pear terminal app:\n\n```js\nconst readline = require('readline')\nconst rl = readline.createInterface({ input: process.stdin, output: process.stdout })\nrl.on('line', l => console.log('got:', l))\n```",
+      "expected_output": "Rewrites with bare-readline + bare-tty streams, MODE_RAW, Pear.teardown, Pear.exit on close.",
+      "assertions": [
+        { "type": "must_contain", "value": "bare-readline" },
+        { "type": "must_contain", "value": "bare-tty" },
+        { "type": "must_not_contain", "value": "process.stdin" },
+        { "type": "must_not_contain", "value": "require\\(['\"]readline['\"]\\)", "regex": true }
+      ]
+    }
+  ]
+}

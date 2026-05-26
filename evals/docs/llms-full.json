@@ -1,0 +1,55 @@
+{
+  "skill_name": "docs:llms-full",
+  "description": "Measures whether the llms-full.txt single-document bundle alone gives an agent enough context to answer cross-cutting Pear questions without going to any other source. Treatment: llms-full.txt loaded into context. Baseline: nothing.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "list the bare-* modules you would use to replace these node imports: fs, http, child_process (detached: true), worker_threads, crypto",
+      "expected_output": "bare-fs, bare-http1, bare-daemon (detached), bare-worker, bare-crypto.",
+      "assertions": [
+        { "type": "must_contain", "value": "bare-fs" },
+        { "type": "must_contain", "value": "bare-http1" },
+        { "type": "must_contain", "value": "bare-daemon" },
+        { "type": "must_contain", "value": "bare-worker" },
+        { "type": "must_contain", "value": "bare-crypto" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "give me the exact `pear run` flag i need to load the latest staged version (not the released one)",
+      "expected_output": "--checkout=staged",
+      "assertions": [
+        { "type": "must_contain", "value": "--checkout=staged" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "what's in Pear.app.dht?",
+      "expected_output": "nodes (cached known nodes), bootstrap (custom bootstrap nodes), both arrays of {host, port}.",
+      "assertions": [
+        { "type": "must_contain", "value": "nodes" },
+        { "type": "must_contain", "value": "bootstrap" },
+        { "type": "must_contain", "value": "host" },
+        { "type": "must_contain", "value": "port" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "what is the difference between Pear.app.route and Pear.app.entrypoint?",
+      "expected_output": "route = raw pathname including leading slash; entrypoint = pathname after pear.routes mapping is applied.",
+      "assertions": [
+        { "type": "must_contain", "value": "raw pathname" },
+        { "type": "must_contain", "value": "routes" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "what error indicates two corestores opened the same store?",
+      "expected_output": "`Error: While lock file ... Resource temporarily unavailable` (RocksDB LOCK contention).",
+      "assertions": [
+        { "type": "must_contain", "value": "Resource temporarily unavailable" },
+        { "type": "must_contain", "value": "RocksDB" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "skill_name": "pear-swarm",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "my swarm.join takes like 20 seconds to connect to anything when i restart the app, every single time. is this normal?",
+      "expected_output": "Likely missed swarm.destroy() on previous exit -> stale DHT records. Also check UDP firewall. Always Pear.teardown(() => swarm.destroy()).",
+      "assertions": [
+        { "type": "must_contain", "value": "swarm.destroy" },
+        { "type": "must_contain", "value": "Pear.teardown" },
+        { "type": "must_use_skill", "value": "pear-swarm" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "i need two peers to find each other knowing each other's public key (not a shared topic). hyperswarm or hyperdht?",
+      "expected_output": "HyperDHT — dht.createServer + server.listen(keyPair), client side dht.connect(publicKey).",
+      "assertions": [
+        { "type": "must_contain", "value": "HyperDHT" },
+        { "type": "must_contain", "value": "createServer" },
+        { "type": "must_contain", "value": "dht.connect" },
+        { "type": "must_use_skill", "value": "pear-swarm" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "i have two parts of my app — chat and inbox. should i make two Hyperswarm instances for them?",
+      "expected_output": "No. One Hyperswarm per app. Join both topics on the same swarm; use store.namespace to scope the Corestore if needed.",
+      "assertions": [
+        { "type": "must_not_contain", "value": "two Hyperswarm" },
+        { "type": "judge", "value": "Tells the user not to create two Hyperswarm instances and explains that one swarm can join many topics." }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i'm getting random `uncaughtException` crashes from peer streams. error happens on conn.write after the other side disconnects",
+      "expected_output": "Always attach conn.on('error', () => {}). SecretStreams emit on close.",
+      "assertions": [
+        { "type": "must_contain", "value": "conn.on('error'" },
+        { "type": "judge", "value": "Explicitly recommends attaching an error handler to every connection." }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "what's the right way to broadcast a message to every peer in my swarm?",
+      "expected_output": "`for (const conn of swarm.connections) conn.write(message)` — or use protomux for typed framing.",
+      "assertions": [
+        { "type": "must_contain", "value": "swarm.connections" },
+        { "type": "must_contain", "value": "conn.write" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "skill_name": "docs:llms-txt",
+  "description": "Measures whether the llms.txt index alone (no full bundle, no AGENTS.md) helps an agent quickly fetch the right canonical doc for a given user question. Treatment: llms.txt loaded into context. Baseline: nothing.",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "where can i find the canonical doc for the `pear stage` command?",
+      "expected_output": "https://docs.pears.com/reference/cli.md (anchor pear-stage).",
+      "assertions": [
+        { "type": "must_contain", "value": "reference/cli" },
+        { "type": "must_contain", "value": "pear-stage" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "i need the spec for the package.json pear field. link?",
+      "expected_output": "https://docs.pears.com/reference/configuration.md",
+      "assertions": [
+        { "type": "must_contain", "value": "reference/configuration" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "what's the doc page for the migration from v1 to v2?",
+      "expected_output": "https://docs.pears.com/reference/migration.md",
+      "assertions": [
+        { "type": "must_contain", "value": "reference/migration" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "i want a single document i can paste into a context window with all the pear docs. is there one?",
+      "expected_output": "llms-full.txt at docs.pears.com root.",
+      "assertions": [
+        { "type": "must_contain", "value": "llms-full.txt" }
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "is there a step-by-step guide for releasing a pear app?",
+      "expected_output": "guide/releasing-a-pear-app.md",
+      "assertions": [
+        { "type": "must_contain", "value": "guide/releasing-a-pear-app" }
+      ]
+    }
+  ]
+}
