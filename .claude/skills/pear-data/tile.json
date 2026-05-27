@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-data",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Use the Holepunch storage primitives correctly inside a Pear application — Hypercore (append-only log), Hyperbee (ordered K/V on a core), Hyperdrive (P2P filesystem), Autobase (multi-writer linearisation), and Corestore (one factory per app).",
+  "skills": {
+    "pear-data": { "path": "SKILL.md" }
+  }
+}
