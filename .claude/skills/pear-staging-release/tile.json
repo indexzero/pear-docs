@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-staging-release",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Operate the Pear distribution workflow — `pear stage`, `pear seed`, `pear release`, `pear dump`, `pear info`, `pear touch`, channels, the `<fork>.<length>.<key>` version triplet, the released vs staged pointer, rollbacks, and the dump-stage-release pattern.",
+  "skills": {
+    "pear-staging-release": { "path": "SKILL.md" }
+  }
+}
