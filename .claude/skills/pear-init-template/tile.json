@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-init-template",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Author and distribute `pear init` templates — directory layout, `_template.json` with `params` (name, prompt, default, validation, override, shave, msg), `__local__` placeholders in filenames and contents, testing with `pear init ./dir`, and shipping via `pear stage` / `pear seed`.",
+  "skills": {
+    "pear-init-template": { "path": "SKILL.md" }
+  }
+}
