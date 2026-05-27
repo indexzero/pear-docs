@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-terminal-app",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Build, run, and debug Pear terminal applications on the Bare runtime using bare-tty, bare-readline, bare-process, and the Pear lifecycle (Pear.app, Pear.teardown, Pear.updates).",
+  "skills": {
+    "pear-terminal-app": { "path": "SKILL.md" }
+  }
+}
