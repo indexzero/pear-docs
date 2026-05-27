@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-debug",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Diagnose and fix Pear application failures — `Pear.teardown` callback fires but the app keeps running, sidecar exits without running the app, `Error: While lock file ... Resource temporarily unavailable`, slow Hyperswarm joins, `AddonError: ADDON_NOT_FOUND`, `Bare is not defined`, `bare-pack` MODULE_NOT_FOUND, missing builtin modules — plus how to attach the V8 inspector with `pear-inspect` and read crash logs.",
+  "skills": {
+    "pear-debug": { "path": "SKILL.md" }
+  }
+}
