@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-node-compat",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Make Node.js code, libraries, and APIs work under the Bare runtime that powers Pear — by substituting `bare-*` modules, wiring `package.json` `imports` maps, applying the `with.imports` pragma, handling the missing `global.process`, and avoiding `bare-pack` failures from conditional `require()`.",
+  "skills": {
+    "pear-node-compat": { "path": "SKILL.md" }
+  }
+}
