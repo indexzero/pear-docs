@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-mobile-app",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Build Bare-powered mobile applications for iOS and Android using bare-expo, react-native-bare-kit, and bare-pack — including running a Bare backend as a Worklet beside a React Native UI, bridging with bare-rpc, bundling per-architecture, and linking native addons.",
+  "skills": {
+    "pear-mobile-app": { "path": "SKILL.md" }
+  }
+}
