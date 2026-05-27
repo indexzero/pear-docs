@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-runtime",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Routes Pear runtime questions to the right specialized skill and answers cross-cutting questions about the Pear platform — what Pear is, how Bare differs from Node.js, the CLI surface, and the application identity model.",
+  "skills": {
+    "pear-runtime": { "path": "SKILL.md" }
+  }
+}
