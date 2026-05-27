@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-desktop-app",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Build, run, and debug Pear desktop applications using pear-electron, pear-bridge, the `pear.gui` config, HTML/JS UI, and the v2 entrypoint pattern (Runtime + Bridge).",
+  "skills": {
+    "pear-desktop-app": { "path": "SKILL.md" }
+  }
+}
