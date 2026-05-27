@@ -1,0 +1,9 @@
+{
+  "name": "holepunchto/pear-swarm",
+  "version": "0.1.0",
+  "private": false,
+  "summary": "Discover and connect peers using Hyperswarm (topic-based) and HyperDHT (keypair-based) inside a Pear application — including topic generation, `swarm.join`, `discovery.flushed()`, encrypted streams, `store.replicate(conn)`, holepunching, and proper teardown.",
+  "skills": {
+    "pear-swarm": { "path": "SKILL.md" }
+  }
+}
